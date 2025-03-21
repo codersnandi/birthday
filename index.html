@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Snehaa 🎂</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #001f3f; /* Dark blue */
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background: #ff5e99;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .photo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 50px auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-frame {
+            width: 300px;
+            height: 300px;
+            background: #001f3f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 10px solid white;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .photo-frame img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .cake-img {
+            display: block;
+            margin: 60px auto 20px auto;
+            max-width: 600px;
+            border: 10px solid white;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+            animation: popIn 1s ease forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 0 0 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .buttons button {
+            padding: 12px 30px;
+            background: #ff5e99;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="popup" id="birthdayPopup">
+        <h1>🎉 Happy Birthday Snehaa! 🎉</h1>
+        <h2>Many many happy returns of the day & lots of love💖✨</h2>
+        <p>From Santanu </p>
+        <button onclick="closePopup()">Let's Celebrate!</button>
+    </div>
+
+    <div class="photo-section">
+        <div class="photo-frame">
+            <img src="picture1.jpg" alt="Snehaa Photo 1">
+        </div>
+        <div class="photo-frame">
+            <img src="picture2.jpg" alt="Snehaa Photo 2">
+        </div>
+        <div class="photo-frame">
+            <img src="picture3.jpg" alt="Snehaa Photo 3">
+        </div>
+    </div>
+
+    <img src="cake.png" alt="Birthday Cake" class="cake-img">
+
+    <div class="buttons">
+        <button onclick="cutCake()"> -> Cut Cake 🍰</button>
+    </div>
+
+    <!-- Sparkles Script -->
+    <script>
+        function closePopup() {
+            document.getElementById('birthdayPopup').style.display = 'none';
+        }
+
+        function cutCake() {
+            alert('🍰 🥳 🥳 You cut the cake!');
+        }
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let sparkles = [];
+
+        function Sparkle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 2 + 1;
+            this.color = getRandomColor();
+            this.velocityX = Math.random() * 2 - 1;
+            this.velocityY = Math.random() * 2 - 1;
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#0000FF', '#800080', '#FFC0CB', '#FFD700'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            sparkles.forEach((sparkle, index) => {
+                ctx.beginPath();
+                ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
+                ctx.fillStyle = sparkle.color;
+                ctx.fill();
+
+                sparkle.x += sparkle.velocityX;
+                sparkle.y += sparkle.velocityY;
+
+                if (sparkle.x < 0 || sparkle.x > canvas.width || sparkle.y < 0 || sparkle.y > canvas.height) {
+                    sparkles.splice(index, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        function addSparkles(x, y) {
+            for (let i = 0; i < 10; i++) {
+                sparkles.push(new Sparkle(x, y));
+            }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            addSparkles(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('click', (e) => {
+            addSparkles(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            Array.from(e.touches).forEach(touch => {
+                addSparkles(touch.clientX, touch.clientY);
+            });
+        }, { passive: false });
+
+        document.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            Array.from(e.touches).forEach(touch => {
+                addSparkles(touch.clientX, touch.clientY);
+            });
+        }, { passive: false });
+
+        animate();
+    </script>
+</body>
+
+</html>
